@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<!-- Creando la Vista para la Devolucion de Productos-->
+
+         <record id="account_invoice_validate_form" model="ir.ui.view">
+            <field name="name">Autorizar Factura</field>
+            <field name="model">account.invoice.validate</field>
+            <field name="arch" type="xml">
+              <form string="Devolucion de Productos" version="7.0">
+                    <sheet>
+                       <group>
+                        <field name="password" password="True" />
+                       </group>
+                       <p/>
+                       <center><h3>Escriba correctamente su contraseña respetando Mayusculas y Minusculas, pulse "Autorizar"</h3></center>
+                    </sheet>
+                  <footer>
+                    <center>
+                      <button name="auth" string="Autorizar" icon="gtk-execute" type="object" class="oe_highlight"/>
+                      ó
+                      <button string="Cancel" class="oe_link" special="cancel"/>
+                    </center>
+                  </footer>
+             </form>
+            </field>
+        </record>
+
+
+        <act_window name="Autorizar Facturacion"
+            res_model="account.invoice.validate"
+            src_model="account.invoice.validate"
+            key2="client_action_multi"
+            multi="True"
+            view_mode="form"
+            view_type="form"
+            target="new"
+            id="action_account_invoice_validate"/>
+
+
+        <!--============================================HERENCIA AL FORMULARIO DE FACTURA========================================-->
+
+         <record id="view_invoice_form_inherit_attachment_nikw" model="ir.ui.view">
+            <field name="name">account.invoice.form.nikw.validate</field>
+            <field name="model">account.invoice</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                 <field name="state" position="before">
+                    <field name="validate_attachment" invisible="1" />
+                    <button name="%(action_account_invoice_validate)d" string="Autorizar Factura" icon="terp-dolar_ok!" type="action" attrs="{'invisible':['|',('state','!=','draft'),('validate_attachment','=',True)]}"/>
+                 </field>
+            </field>
+        </record>
+
+</data>
+</openerp>

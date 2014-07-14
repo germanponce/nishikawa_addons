@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+<!--======================FORM VIEW =======================-->
+  
+  <record model="ir.ui.view" id="inherit_nsk_view_partner_form">
+            <field name="name">NSK res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="type">form</field>
+            <field name="priority">50</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <field name="website" position="after">
+                    <field name="payment_csv" attrs="{'invisible':[('supplier','=',False)]}"/>
+                </field>
+
+            </field>
+        </record>
+    </data>
+</openerp>

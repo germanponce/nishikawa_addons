@@ -1,0 +1,35 @@
+<openerp>
+<data>
+
+<!-- Add fields to product.product object -->
+
+        <record model="ir.ui.view" id="nshkw_inherit_form_product">
+            <field name="name">nshkw.product.normal.form</field>
+            <field name="model">product.product</field>
+            <field name="type">form</field>
+            <field name="priority">55</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+
+                <field name="uom_po_id" position="after" >
+                    <field name="analytics_accounts_required" />
+                </field> 
+            </field>
+        </record>
+
+        <record id="nshkw_quotation_product_search_form_view" model="ir.ui.view">
+            <field name="name">nshkw.quotation.product.search.form</field>
+            <field name="model">product.product</field>
+            <field name="priority">50</field>
+            <field name="inherit_id" ref="product.product_search_form_view"/>
+            <field name="arch" type="xml">
+                <search string="Product">
+                  <field name="analytics_accounts_required" />
+                   <filter string="Cuentas Analiticas Requeridas" name="analytics_accounts" domain="[('analytics_accounts_required','=',True)]"/>
+                </search>
+            </field>
+        </record>
+
+
+</data>
+</openerp>

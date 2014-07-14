@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+        <!-- =====================HERENCIA AL FORMULARIO DE POLIZAS ========================-->
+
+         <record id="view_account_movet_nikw" model="ir.ui.view">
+            <field name="name">account.move.form.nikw</field>
+            <field name="model">account.move</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+                 <field name="ref" position="after" >
+                    <field name="reference_account_lines" invisible="1"/>
+                 </field>
+
+            </field>
+        </record>
+        
+        <record id="view_account_movet_nikw_tree" model="ir.ui.view">
+            <field name="name">account.move.tree.nikw</field>
+            <field name="model">account.move</field>
+            <field name="type">tree</field>
+            <field name="inherit_id" ref="account.view_move_tree"/>
+            <field name="arch" type="xml">
+                <field name="ref" position="after" >
+                    <field name="reference_account_lines" invisible="1" />
+                </field>                
+            </field>
+        </record>
+
+        <record id="view_account_movet_nikw_filters" model="ir.ui.view">
+            <field name="name">account.move.search.nikw</field>
+            <field name="model">account.move</field>
+            <field name="type">search</field>
+            <field name="inherit_id" ref="account.view_account_move_filter"/>
+            <field name="arch" type="xml">
+                <field name="name" position="after" >
+                    <field name="reference_account_lines"/>
+                </field>
+                <group position="inside">
+                    <filter string="Apunte Contable" domain="[]" context="{'group_by':'reference_account_lines'}"/>
+                </group>
+                
+            </field>
+        </record>
+
+</data>
+</openerp>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+supplier_payment_export_user,supplier_payment_export,model_supplier_payment_export,purchase.group_purchase_user,1,1,1,1
+supplier_payment_export_manager,supplier_payment_export,model_supplier_payment_export,purchase.group_purchase_manager,1,1,1,1
+supplier_payment_export_line_user,supplier_payment_export_line,model_supplier_payment_export_line,purchase.group_purchase_user,1,1,1,1
+supplier_payment_export_line_manager,supplier_payment_export_line,model_supplier_payment_export_line,purchase.group_purchase_manager,1,1,1,1

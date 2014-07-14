@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        
+<!--======================FORM VIEW =======================-->
+        <record id="supplier_payment_export_form_id" model="ir.ui.view">
+            <field name="name">supplier.payment.export.form</field>
+            <field name="model">supplier.payment.export</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Generacion de Archivo CSV para Pago" version="7.0">
+                    
+                    <sheet>
+                        <separator colspan="4" string="Ingresa los Datos del Pago"/>
+                        <group col="4">
+                            <field name="company_id" />
+                            <field name="date" on_change="on_change_load_lines(date)"/>
+                            <field name="bank_selection"/>
+                            <field name="csv_file" />
+                        </group>
+                        <group>
+                            <field name="name" />
+                            <field name="visible_lines" invisible="1"/>
+                        </group>
+                        <group col="4">
+                            <field name="select_partner" />
+                            <field name="partner_id" attrs="{'invisible':[('select_partner','=',False)],'required':[('select_partner','=',True)]}" domain="[('supplier','=',True)]" on_change="on_change_load_lines_partner(partner_id,date)"/>
+
+                        </group>
+                        <!-- <separator string="Rango de Fechas para Pago" />
+                        <group col="4">
+                            <field name="date_start" on_change="on_change_export_lines(date_start,date_end)"/>
+                            <field name="date_end" on_change="on_change_export_lines(date_start,date_end)"/>
+                        </group> -->
+                        <notebook>
+                            <page string="Detalle de Pagos">
+                                <field name="export_lines" attrs="{'invisible':[('visible_lines','=',False)]}">
+                                    <tree string="Inventario" editable="bottom" create="false" readonly="1">
+                                        <field name="partner_id" />
+                                        <field name="date_payment" />
+                                        <field name="invoice_id" />
+                                        <field name="date_invoice" />
+                                        <field name="date_end" />
+                                        <field name="amount_total" />
+                                        <field name="type_payment" />
+                                    </tree>
+                                </field>
+                                <group class="oe_subtotal_footer oe_right" colspan="2" name="amount_global_total">
+                                    <field name="amount_global_total" widget='monetary' readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <footer>
+                        <button name="export_csv_file" string="Generar Pago" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+
+                </field>
+            </record>
+
+        <!--============================================ACTION========================================-->
+
+        <act_window
+            name="Exportar Pago Proveedores"
+            res_model="supplier.payment.export"
+            src_model="supplier.payment.export"
+            view_mode="form" target="new"
+            key2="client_action_multi"
+            id="supplier_payment_export_action"/>
+
+    <!-- Listado del modelo de datos Exportados -->
+    <record id="supplier_payment_model_tree" model="ir.ui.view">
+          <field name="name">supplier.payment.model.tree</field>
+          <field name="model">supplier.payment.model</field>
+          <field name="type">tree</field>
+          <field name="priority" eval="5"/>
+          <field name="arch" type="xml">
+            <tree string="Listado de Pago de Proveedores" create="false">
+                <field name="date" />
+                <field name="bank_selection" />
+                <field name="supplier_ids" widget="many2many_tags" />
+                <field name="name" />
+                <field name="amount_total" />
+                <field name="csv_file_name" invisible="1" />
+                <field name="csv_file" filename="csv_file_name"/>
+            </tree>
+          </field>
+        </record>
+
+        <record id="supplier_payment_model_filter" model="ir.ui.view">
+            <field name="name">supplier.payment.model.filter</field>
+            <field name="model">supplier.payment.model</field>
+            <field name="arch" type="xml">
+                <search string="Pago de Proveedores">
+                    <field name="date" />
+                    <field name="bank_selection" />
+                    <field name="supplier_ids" widget="many2many_tags" />
+                    <field name="name" />
+                    <field name="amount_total" />
+                    <field name="csv_file_name"/>
+                    <filter string="Banamex" name="banam" domain="[('bank_selection','=','banamex')]"/>
+                    <group expand="0" string="Group By...">
+                        <filter string="Fecha" name="date" domain="[]" context="{'group_by':'date'}"/>
+                        <filter string="Banco" name="bank" domain="[]" context="{'group_by':'bank_selection'}" />
+                    </group>  
+               </search>
+            </field>
+        </record>
+
+        <record id="action_supplier_payment_model" model="ir.actions.act_window">
+            <field name="name">Pagos a Proveedores</field>
+            <field name="res_model">supplier.payment.model</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree</field>
+            <field name="search_view_id" ref="supplier_payment_model_filter"/>
+        </record>
+
+
+        <menuitem name="Pago Proveedores" id="supplier_payment_menu_parent" sequence="2" parent="base.menu_purchase_root" />
+
+        <menuitem action="supplier_payment_export_action" id="menu_export_payment" parent="supplier_payment_menu_parent" sequence="0"/>
+
+        <menuitem action="action_supplier_payment_model" id="menu_payment_supplier" parent="supplier_payment_menu_parent" sequence="1"/>
+
+    </data>
+</openerp>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+<!-- Creando la Vista para la Devolucion de Productos-->
+        <!--============================================HERENCIA AL FORMULARIO DE FACTURA========================================-->
+
+         <record id="view_invoice_form_inherit_acc_an_sup_nikw_0" model="ir.ui.view">
+            <field name="name">account.invoice.form.nikw.account</field>
+            <field name="model">account.invoice</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                  <xpath expr="//field[@name='invoice_line']/tree/field[@name='name']" position="after">
+                  <field name="analytics_accounts_required" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='account_analytic_id']" position="replace">
+                  <field name="account_analytic_id" domain="[('type','&lt;&gt;','view'), ('company_id', '=', parent.company_id)]" groups="analytic.group_analytic_accounting" attrs="{'required':[('analytics_accounts_required','=',True)]}"/>
+                </xpath>
+                <field name="payment_term" position="after">
+                    <field name="department_id" />
+                </field>
+            </field> 
+        </record> 
+
+      <record id="view_invoice_form_inherit_acc_an_cust_nikw_1" model="ir.ui.view">
+            <field name="name">account.invoice.form.nikw.account</field>
+            <field name="model">account.invoice</field>
+            <field name="type">form</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='name']" position="after">
+                  <field name="analytics_accounts_required" invisible="1"/>
+                </xpath>
+                <xpath expr="//field[@name='invoice_line']/tree/field[@name='account_analytic_id']" position="replace">
+                  <field name="account_analytic_id" groups="analytic.group_analytic_accounting" domain="[('type','!=','view'), ('company_id', '=', parent.company_id)]" attrs="{'required':[('analytics_accounts_required','=',True)]}"/>
+                </xpath>
+            </field>
+        </record>
+
+</data>
+</openerp>

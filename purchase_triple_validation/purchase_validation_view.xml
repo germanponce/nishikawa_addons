@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- CREANDO EL REGISTRO DE PARAMETROS -->
+        <record id="parametros_init_id" model="parametros.config">
+            <field name="limite_compra">5000</field>
+        </record>
+        
+
+        <!--  HERENCIA DE LA VISTA DE COMPRAS -->
+
+        <record id="view_double_purchase_form_nht" model="ir.ui.view">
+            <field name="name">purchase.order.form.inhrt.nsk</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="shipped" position="after" >
+                    <field name="amount_directive" invisible="1" />
+                </field>
+                <field name="state" position="before">
+                    <button name="purchase_directive_approve" type="object" string="Aprobacion Directiva" icon="gtk-execute" attrs="{'invisible':[('amount_directive','=',False)]}" groups="purchase_triple_validation.group_purchase_approver2" class="oe_highlight" />
+                </field>
+            </field>
+        </record>
+
+<!-- =========================  vistas y accion para el modelo de Configuracion =============== -->
+    <record id="parametros_config_tree" model="ir.ui.view">
+            <field name="name">parametros.config.tree</field>
+            <field name="model">parametros.config</field>
+            <field name="arch" type="xml">
+                <tree string="Parametros de Configuracion para Validaciones de Compras" >
+                  <field name="limite_compra" />
+
+                </tree>                
+            </field>
+        </record>
+
+        <record id="parametros_config_form" model="ir.ui.view">
+            <field name="name">parametros.config.form</field>
+            <field name="model">parametros.config</field>
+            <field name="arch" type="xml">
+                <form string="Parametros de Configuracion para Validaciones de Compras"  version="7.0">
+
+                    <sheet>
+                      <separator string="Configuracion de Parametros para Validaciones en Compras" colspan="4" />
+                       <group col="4">
+                            <field name="limite_compra" />
+                       </group>
+                    </sheet>
+
+                </form>
+            </field>
+        </record>
+
+        <record id="parametros_config_action" model="ir.actions.act_window">
+            <field name="name">Parametros</field>
+            <field name="res_model">parametros.config</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <menuitem action="parametros_config_action" id="action_menu_config" parent="purchase.menu_purchase_config_purchase" sequence="100" groups="purchase_triple_validation.group_purchase_approver2"/>
+
+    </data>
+</openerp>

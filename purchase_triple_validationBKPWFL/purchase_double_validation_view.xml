@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+     <!-- <record model="ir.ui.view" id="purchase_order_search_inherit">
+        <field name="name">purchase.order.list.select.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.view_purchase_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='draft']" position="after">
+                <filter icon="terp-gtk-jump-to-ltr" name="to_approve" string="To Approve" domain="[('state','in',('wait','confirmed'))]" help="Purchase orders which are not approved yet."/>
+            </xpath>
+        </field>
+    </record> -->
+
+    <record model="ir.ui.view" id="purchase_order_search_inherit">
+    <field name="name">purchase.order.list.select.inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <field name="state" position="before">
+                <button string="Aprobacion Directiva" type="workflow" name="purchase_directive_router" states="directive" icon="gtk-execute" groups="purchase_triple_validation.group_purchase_approver2"/>
+                <button string="Cancelar" type="workflow" name="purchase_directive_cancel" states="directive" icon="gtk-cancel" groups="purchase_triple_validation.group_purchase_approver2"/>
+            </field>
+    
+        </field>
+    </record>
+
+
+    </data>
+</openerp>
